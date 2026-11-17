@@ -10,22 +10,20 @@
   <meta name="robots" content="index, follow" />
   <meta name="author" content="Independent Open-Source Project" />
   <meta name="theme-color" content="#0B0F19" />
-  <link rel="canonical" href="https://example.github.io/bulk-delete-x/" />
+ <link rel="canonical" href="https://cryptotestnett.github.io/bulk-delete-x-posts-replies/" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Bulk Delete X Posts, Replies & Reposts" />
   <meta property="og:title" content="Bulk Delete X (Twitter) Posts, Replies & Reposts – Free Browser Script" />
   <meta property="og:description" content="Free browser console scripts to bulk delete X/Twitter posts, replies, and retweets without API keys or extensions. Open source and runs locally." />
-  <meta property="og:url" content="https://example.github.io/bulk-delete-x/" />
-  <meta property="og:image" content="https://example.github.io/bulk-delete-x/og-image.png" />
+  <meta property="og:url" content="https://cryptotestnett.github.io/bulk-delete-x-posts-replies/" />
   <meta property="og:locale" content="en_US" />
 
   <!-- Twitter / X Card -->
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Bulk Delete X (Twitter) Posts, Replies & Reposts – Free Browser Script" />
   <meta name="twitter:description" content="Free console scripts to bulk delete X/Twitter posts, replies, and retweets. No API keys, no extensions." />
-  <meta name="twitter:image" content="https://example.github.io/bulk-delete-x/og-image.png" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -364,7 +362,7 @@ deleteMyRepostsOnly();</script>
         <a href="#tool" class="hover:text-sky-400 transition-colors">Scripts</a>
         <a href="#steps" class="hover:text-sky-400 transition-colors">How it works</a>
         <a href="#faq" class="hover:text-sky-400 transition-colors">FAQ</a>
-        <a href="https://github.com/" target="_blank" rel="noopener" class="hover:text-sky-400 transition-colors">GitHub</a>
+        <a href="#support" class="inline-flex items-center gap-1.5 rounded-lg border border-sky-400/30 bg-sky-400/10 px-3 py-1.5 text-xs font-semibold text-sky-300 hover:bg-sky-400/20 transition-colors">⚡ Tip Crypto</a>
       </div>
       <a href="#tool" class="btn-primary sm:hidden rounded-lg px-4 py-2 text-sm">Get Script</a>
     </nav>
@@ -599,6 +597,41 @@ deleteMyRepostsOnly();</script>
     </section>
 
   </main>
+
+  <!-- Support / Crypto Donation Section -->
+  <section id="support" aria-labelledby="support-heading" class="mx-auto max-w-3xl px-5 pb-20 scroll-mt-20">
+    <div class="card rounded-3xl p-7 sm:p-10 text-center">
+      <span class="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-400/10 px-3.5 py-1 text-xs font-medium text-sky-300">
+        Free Forever • Community Supported
+      </span>
+      <h2 id="support-heading" class="mt-4 text-2xl sm:text-3xl font-bold tracking-tight text-white">
+        Saved you hours of manual deleting?
+      </h2>
+      <p class="mx-auto mt-2.5 max-w-xl text-sm leading-relaxed text-slate-400">
+        This tool has no subscriptions, API paywalls, or tracking. If it helped clean up your timeline, you can send a crypto tip below.
+      </p>
+
+      <!-- Crypto QR & Copy Box -->
+      <div class="mx-auto mt-7 max-w-md rounded-2xl border border-[#1E293B] bg-[#0B0F19] p-6">
+        <p class="text-sm font-semibold text-white">⚡ Tip via Crypto (EVM Networks)</p>
+        <p class="mt-1 text-xs text-slate-400">ETH • USDC • USDT (Ethereum, Polygon, Base, Arbitrum, BNB)</p>
+
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&margin=6&data=0x60630e74CB81adbD065FFb5b19a09E216A98d2d2"
+             alt="EVM Crypto Wallet QR Code"
+             class="mx-auto my-5 block rounded-xl bg-white p-1" />
+
+        <code class="block break-all rounded-lg border border-[#1E293B] bg-[#131A2A] px-3 py-2.5 font-mono text-xs text-sky-300">
+          0x60630e74CB81adbD065FFb5b19a09E216A98d2d2
+        </code>
+
+        <button type="button"
+                onclick="navigator.clipboard.writeText('0x60630e74CB81adbD065FFb5b19a09E216A98d2d2'); const b=this; b.textContent='✓ Wallet Address Copied!'; setTimeout(()=>b.textContent='Copy EVM Address', 2000);"
+                class="btn-primary mt-4 inline-flex items-center justify-center rounded-xl px-5 py-2.5 text-xs sm:text-sm cursor-pointer">
+          Copy EVM Address
+        </button>
+      </div>
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer class="border-t border-[#1E293B] bg-[#0B0F19]">
