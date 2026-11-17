@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Bulk Delete X (Twitter) Posts, Replies & Reposts – Free Browser Script</title>
+  <meta name="description" content="Free browser console scripts to bulk delete your X (Twitter) posts, replies, and retweets (reposts) independently. No API keys, no paid subscriptions, no extensions. Runs 100% locally." />
+  <meta name="keywords" content="bulk delete twitter posts, bulk delete x replies, delete all retweets, delete all reposts, delete all tweets, twitter console script, x cleaner, free twitter delete script, no api key" />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Independent Open-Source Project" />
+  <meta name="theme-color" content="#0B0F19" />
+  <link rel="canonical" href="https://example.github.io/bulk-delete-x/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Bulk Delete X Posts, Replies & Reposts" />
+  <meta property="og:title" content="Bulk Delete X (Twitter) Posts, Replies & Reposts – Free Browser Script" />
+  <meta property="og:description" content="Free browser console scripts to bulk delete X/Twitter posts, replies, and retweets without API keys or extensions. Open source and runs locally." />
+  <meta property="og:url" content="https://example.github.io/bulk-delete-x/" />
+  <meta property="og:image" content="https://example.github.io/bulk-delete-x/og-image.png" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Bulk Delete X (Twitter) Posts, Replies & Reposts – Free Browser Script" />
+  <meta name="twitter:description" content="Free console scripts to bulk delete X/Twitter posts, replies, and retweets. No API keys, no extensions." />
+  <meta name="twitter:image" content="https://example.github.io/bulk-delete-x/og-image.png" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Bulk Delete X (Twitter) Posts, Replies & Reposts",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (Chrome or Edge browser console)",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Free browser console scripts to bulk delete X (Twitter) posts, replies, and reposts without API keys or extensions."
+  }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <style>
+    :root {
+      --bg: #0B0F19;
+      --card: #131A2A;
+      --border: #1E293B;
+      --accent: #38BDF8;
+      --accent-2: #6366F1;
+    }
+    html, body { background: var(--bg); color: #E2E8F0; font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+    ::selection { background: rgba(56, 189, 248, 0.35); }
+
+    .glow-bg {
+      background:
+        radial-gradient(900px 500px at 15% -10%, rgba(56, 189, 248, 0.18), transparent 60%),
+        radial-gradient(800px 500px at 90% 0%, rgba(99, 102, 241, 0.16), transparent 60%);
+    }
+    .card { background: var(--card); border: 1px solid var(--border); }
+    .card-hover { transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease; }
+    .card-hover:hover { transform: translateY(-3px); border-color: rgba(56, 189, 248, 0.45); box-shadow: 0 12px 40px -15px rgba(56, 189, 248, 0.35); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #38BDF8, #6366F1);
+      color: #0B0F19; font-weight: 700;
+      transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+      box-shadow: 0 8px 30px -10px rgba(56, 189, 248, 0.6);
+    }
+    .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 14px 40px -10px rgba(56, 189, 248, 0.75); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-ghost { border: 1px solid var(--border); transition: all .2s ease; }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: .5rem; }
+
+    kbd {
+      display: inline-block;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .8rem; font-weight: 600;
+      padding: .15rem .5rem; margin: 0 .15rem;
+      color: #E2E8F0;
+      background: #0F1629;
+      border: 1px solid #334155;
+      border-bottom-width: 3px;
+      border-radius: .4rem;
+      box-shadow: 0 1px 0 rgba(0,0,0,.4);
+      white-space: nowrap;
+    }
+
+    .inline-code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .85rem;
+      background: #0B0F19;
+      border: 1px solid #1E293B;
+      border-radius: .4rem;
+      padding: .15rem .5rem;
+    }
+
+    /* Mode tabs */
+    .tab-btn {
+      color: #94A3B8;
+      transition: color .2s ease, background .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+    .tab-btn:hover { color: #E2E8F0; background: rgba(56, 189, 248, 0.07); }
+    .tab-btn[aria-selected="true"] {
+      color: #0B0F19; font-weight: 700;
+      background: linear-gradient(135deg, #38BDF8, #6366F1);
+      box-shadow: 0 8px 28px -10px rgba(56, 189, 248, 0.7);
+    }
+
+    .code-block { background: #070B14; }
+    pre#scriptPre { scrollbar-width: thin; scrollbar-color: #1E293B transparent; }
+
+    details summary { list-style: none; cursor: pointer; }
+    details summary::-webkit-details-marker { display: none; }
+    details[open] .chev { transform: rotate(180deg); }
+    .chev { transition: transform .25s ease; }
+
+    .copied-flash { animation: pop .35s ease; }
+    @keyframes pop { 0% { transform: scale(.96);} 60% { transform: scale(1.03);} 100% { transform: scale(1);} }
+
+    .swap-in { animation: swapIn .35s ease; }
+    @keyframes swapIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+    .fade-up { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-up.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .fade-up, .card-hover, .btn-primary, .swap-in, .copied-flash { transition: none; animation: none; }
+      .fade-up { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <!--
+    ==========================================================================
+    YOUR SCRIPTS GO HERE
+    --------------------------------------------------------------------------
+    Replace the placeholder comment inside each block below with your script.
+    - The page shows & copies exactly what is inside the active block.
+    - If your code ever contains the text "</script>", write it as "<\/script>".
+    ==========================================================================
+  -->
+  <script type="text/plain" id="tpl-replies">async function deleteMyRepliesOnly() {
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const myHandle = window.location.pathname.split('/')[1]?.toLowerCase();
+  if (!myHandle) {
+    console.error("❌ Error: Open your X Replies page (x.com/YourUsername/with_replies) first.");
+    return;
+  }
+
+  let emptyScrolls = 0;
+  let totalDeleted = 0;
+
+  while (emptyScrolls < 6) {
+    const articles = document.querySelectorAll('article[data-testid="tweet"]');
+    let deletedInPass = 0;
+
+    for (let article of articles) {
+      if (article.querySelector('[data-testid="unretweet"]')) continue;
+
+      const userLinks = Array.from(article.querySelectorAll('a[href]')).map(a => a.getAttribute('href').toLowerCase());
+      if (!userLinks.includes(`/${myHandle}`)) continue;
+
+      const tweetTextEl = article.querySelector('[data-testid="tweetText"]');
+      const statusLink = article.querySelector('a[href*="/status/"]');
+      const tweetId = statusLink ? statusLink.getAttribute('href').split('/status/')[1]?.split('/')[0] : 'unknown-id';
+      const previewText = tweetTextEl ? tweetTextEl.innerText.replace(/\n/g, ' ').slice(0, 40) : '[Media/No text]';
+
+      const caret = article.querySelector('[data-testid="caret"]');
+      if (!caret) continue;
+
+      caret.scrollIntoView({ behavior: 'instant', block: 'center' });
+      await sleep(200);
+      caret.click();
+      await sleep(500);
+
+      const menuItems = document.querySelectorAll('[role="menuitem"]');
+      let foundDelete = false;
+
+      for (let item of menuItems) {
+        if (item.innerText.trim() === 'Delete') {
+          item.click();
+          await sleep(500);
+          const confirmBtn = document.querySelector('[data-testid="confirmationSheetConfirm"]');
+          if (confirmBtn) {
+            confirmBtn.click();
+            foundDelete = true;
+            deletedInPass++;
+            totalDeleted++;
+            console.log(`✅ [#${totalDeleted}] Deleted Reply ID: ${tweetId} | "${previewText}..."`);
+            await sleep(1500);
+          }
+          break;
+        }
+      }
+
+      if (!foundDelete) {
+        document.body.click();
+        await sleep(300);
+      }
+    }
+
+    if (deletedInPass === 0) {
+      emptyScrolls++;
+      console.log(`🔄 Scrolling down... (Attempt ${emptyScrolls}/6)`);
+      window.scrollBy(0, 1000);
+      await sleep(2500);
+    } else {
+      emptyScrolls = 0;
+      window.scrollBy(0, 600);
+      await sleep(1500);
+    }
+  }
+  console.log(`🎉 FINISHED! Total replies deleted: ${totalDeleted}`);
+}
+
+deleteMyRepliesOnly();</script>
+  <script type="text/plain" id="tpl-posts">async function deleteMyPostsOnly() {
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const myHandle = window.location.pathname.split('/')[1]?.toLowerCase();
+  if (!myHandle) {
+    console.error("❌ Error: Open your X profile page (x.com/YourUsername) first.");
+    return;
+  }
+
+  let emptyScrolls = 0;
+  let totalDeleted = 0;
+
+  while (emptyScrolls < 6) {
+    const articles = document.querySelectorAll('article[data-testid="tweet"]');
+    let deletedInPass = 0;
+
+    for (let article of articles) {
+      // Skip reposts
+      if (article.querySelector('[data-testid="unretweet"]')) continue;
+
+      // Verify ownership
+      const userLinks = Array.from(article.querySelectorAll('a[href]')).map(a => a.getAttribute('href').toLowerCase());
+      if (!userLinks.includes(`/${myHandle}`)) continue;
+
+      // Skip replies (check for "Replying to", leading @mention, or thread line/parent)
+      const tweetTextEl = article.querySelector('[data-testid="tweetText"]');
+      const hasReplyingText = article.innerText.includes('Replying to');
+      const startsWithMention = tweetTextEl && tweetTextEl.innerText.trim().startsWith('@');
+      if (hasReplyingText || startsWithMention) continue;
+
+      const statusLink = article.querySelector('a[href*="/status/"]');
+      const tweetId = statusLink ? statusLink.getAttribute('href').split('/status/')[1]?.split('/')[0] : 'unknown-id';
+      const previewText = tweetTextEl ? tweetTextEl.innerText.replace(/\n/g, ' ').slice(0, 40) : '[Media/No text]';
+
+      const caret = article.querySelector('[data-testid="caret"]');
+      if (!caret) continue;
+
+      caret.scrollIntoView({ behavior: 'instant', block: 'center' });
+      await sleep(200);
+      caret.click();
+      await sleep(500);
+
+      const menuItems = document.querySelectorAll('[role="menuitem"]');
+      let foundDelete = false;
+
+      for (let item of menuItems) {
+        if (item.innerText.trim() === 'Delete') {
+          item.click();
+          await sleep(500);
+          const confirmBtn = document.querySelector('[data-testid="confirmationSheetConfirm"]');
+          if (confirmBtn) {
+            confirmBtn.click();
+            foundDelete = true;
+            deletedInPass++;
+            totalDeleted++;
+            console.log(`✅ [#${totalDeleted}] Deleted Post ID: ${tweetId} | "${previewText}..."`);
+            await sleep(1500);
+          }
+          break;
+        }
+      }
+
+      if (!foundDelete) {
+        document.body.click();
+        await sleep(300);
+      }
+    }
+
+    if (deletedInPass === 0) {
+      emptyScrolls++;
+      console.log(`🔄 Scrolling down... (Attempt ${emptyScrolls}/6)`);
+      window.scrollBy(0, 1000);
+      await sleep(2500);
+    } else {
+      emptyScrolls = 0;
+      window.scrollBy(0, 600);
+      await sleep(1500);
+    }
+  }
+  console.log(`🎉 FINISHED! Total posts deleted: ${totalDeleted}`);
+}
+
+deleteMyPostsOnly();</script>
+  <script type="text/plain" id="tpl-reposts">async function deleteMyRepostsOnly() {
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  let emptyScrolls = 0;
+  let totalUnreposted = 0;
+
+  while (emptyScrolls < 6) {
+    const unretweetBtns = document.querySelectorAll('[data-testid="unretweet"]');
+    let undoneInPass = 0;
+
+    for (let btn of unretweetBtns) {
+      const article = btn.closest('article[data-testid="tweet"]');
+      const tweetTextEl = article ? article.querySelector('[data-testid="tweetText"]') : null;
+      const statusLink = article ? article.querySelector('a[href*="/status/"]') : null;
+      const tweetId = statusLink ? statusLink.getAttribute('href').split('/status/')[1]?.split('/')[0] : 'unknown-id';
+      const previewText = tweetTextEl ? tweetTextEl.innerText.replace(/\n/g, ' ').slice(0, 40) : '[Media/No text]';
+
+      btn.scrollIntoView({ behavior: 'instant', block: 'center' });
+      await sleep(200);
+      btn.click();
+      await sleep(500);
+
+      const confirmBtn = document.querySelector('[data-testid="unretweetConfirm"]');
+      if (confirmBtn) {
+        confirmBtn.click();
+        undoneInPass++;
+        totalUnreposted++;
+        console.log(`✅ [#${totalUnreposted}] Removed Repost ID: ${tweetId} | "${previewText}..."`);
+        await sleep(1200);
+      } else {
+        document.body.click();
+        await sleep(300);
+      }
+    }
+
+    if (undoneInPass === 0) {
+      emptyScrolls++;
+      console.log(`🔄 Scrolling down... (Attempt ${emptyScrolls}/6)`);
+      window.scrollBy(0, 1000);
+      await sleep(2500);
+    } else {
+      emptyScrolls = 0;
+      window.scrollBy(0, 600);
+      await sleep(1500);
+    }
+  }
+  console.log(`🎉 FINISHED! Total reposts removed: ${totalUnreposted}`);
+}
+
+deleteMyRepostsOnly();</script>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-[#0B0F19]/70 border-b border-[#1E293B]">
+    <nav class="mx-auto max-w-6xl px-5 h-16 flex items-center justify-between" aria-label="Main navigation">
+      <a href="#top" class="flex items-center gap-2 font-semibold tracking-tight">
+        <span class="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-sky-400 to-indigo-500 text-[#0B0F19] font-black">X</span>
+        <span>Bulk Delete X</span>
+      </a>
+      <div class="hidden sm:flex items-center gap-6 text-sm text-slate-400">
+        <a href="#tool" class="hover:text-sky-400 transition-colors">Scripts</a>
+        <a href="#steps" class="hover:text-sky-400 transition-colors">How it works</a>
+        <a href="#faq" class="hover:text-sky-400 transition-colors">FAQ</a>
+        <a href="https://github.com/" target="_blank" rel="noopener" class="hover:text-sky-400 transition-colors">GitHub</a>
+      </div>
+      <a href="#tool" class="btn-primary sm:hidden rounded-lg px-4 py-2 text-sm">Get Script</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- 1. Hero -->
+    <section class="glow-bg relative overflow-hidden">
+      <div class="mx-auto max-w-4xl px-5 pt-20 pb-24 sm:pt-28 sm:pb-32 text-center">
+        <span class="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-400/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-sky-300">
+          <span class="h-1.5 w-1.5 rounded-full bg-sky-400 animate-pulse"></span>
+          100% Free • Open Source • Runs Locally
+        </span>
+
+        <h1 class="mt-7 text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.05] text-white">
+          Bulk Delete Your <span class="bg-gradient-to-r from-sky-400 to-indigo-400 bg-clip-text text-transparent">X (Twitter) Posts, Replies &amp; Reposts</span> in Minutes
+        </h1>
+
+        <p class="mx-auto mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-400">
+          No API keys, no paid subscriptions, and no sketchy browser extensions. Wipe your posts, replies, or retweets independently directly from your browser console.
+        </p>
+
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a href="#tool" class="btn-primary inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-base">
+            Choose Your Script
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l-6-6m6 6l6-6"/></svg>
+          </a>
+          <a href="#steps" class="btn-ghost inline-flex items-center rounded-xl px-7 py-3.5 text-base font-medium text-slate-300">See the 6 steps</a>
+        </div>
+        <p class="mt-6 text-sm text-slate-500">Works in Chrome &amp; Edge on Windows, macOS, and Linux.</p>
+      </div>
+    </section>
+
+    <!-- 2. Trust & Safety -->
+    <section aria-labelledby="trust-heading" class="mx-auto max-w-6xl px-5 py-20">
+      <div class="text-center mb-12">
+        <h2 id="trust-heading" class="text-sm font-semibold uppercase tracking-widest text-sky-400">Trust &amp; Safety</h2>
+        <p class="mt-3 text-3xl sm:text-4xl font-bold tracking-tight text-white">Built to be transparent, not tricky</p>
+      </div>
+
+      <div class="grid gap-6 md:grid-cols-3">
+        <article class="card card-hover fade-up rounded-2xl p-7">
+          <div class="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-sky-400/10 text-sky-400">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3l8 4v5c0 5-3.5 8.5-8 9-4.5-.5-8-4-8-9V7l8-4z"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-white">Zero Data Sent</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-400">Runs 100% locally inside your browser tab; your account credentials never leave your device.</p>
+        </article>
+
+        <article class="card card-hover fade-up rounded-2xl p-7">
+          <div class="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-400/10 text-indigo-400">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-white">No Daily Limits</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-400">Bypasses third-party extension paywalls and API rate caps.</p>
+        </article>
+
+        <article class="card card-hover fade-up rounded-2xl p-7">
+          <div class="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-400/10 text-emerald-400">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M4 17l6-6 4 4 6-8M14 7h6v6"/></svg>
+          </div>
+          <h3 class="text-lg font-semibold text-white">Real-Time Progress Logs</h3>
+          <p class="mt-2 text-sm leading-relaxed text-slate-400">Prints the exact post ID and text preview of every deleted item in your console.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3 & 4. Interactive Tool: Mode selector + Steps + Code -->
+    <section id="tool" aria-labelledby="tool-heading" class="mx-auto max-w-4xl px-5 py-20 scroll-mt-16">
+      <div class="text-center mb-10 fade-up">
+        <h2 id="tool-heading" class="text-3xl sm:text-4xl font-bold tracking-tight text-white">What do you want to delete?</h2>
+        <p class="mt-3 text-slate-400">Each script works independently &mdash; pick one, follow the steps, and run only what you need.</p>
+      </div>
+
+      <!-- Mode selector -->
+      <div class="fade-up">
+        <div id="modeTabs" role="tablist" aria-label="Choose what to delete"
+             class="card grid grid-cols-3 gap-1.5 rounded-2xl p-1.5">
+          <button type="button" role="tab" id="tab-replies" data-mode="replies" aria-selected="true" aria-controls="toolPanel" tabindex="0"
+                  class="tab-btn flex items-center justify-center gap-2 rounded-xl px-2 py-3 text-xs sm:text-sm sm:px-4">
+            <svg class="hidden sm:block h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12c0-4 3.6-7 8-7s8 3 8 7-3.6 7-8 7c-1 0-2-.1-2.9-.4L4 20l1.4-3.6C4.2 15.2 3 13.7 3 12z"/></svg>
+            <span>Delete Replies</span>
+          </button>
+          <button type="button" role="tab" id="tab-posts" data-mode="posts" aria-selected="false" aria-controls="toolPanel" tabindex="-1"
+                  class="tab-btn flex items-center justify-center gap-2 rounded-xl px-2 py-3 text-xs sm:text-sm sm:px-4">
+            <svg class="hidden sm:block h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            <span>Delete Posts</span>
+          </button>
+          <button type="button" role="tab" id="tab-reposts" data-mode="reposts" aria-selected="false" aria-controls="toolPanel" tabindex="-1"
+                  class="tab-btn flex items-center justify-center gap-2 rounded-xl px-2 py-3 text-xs sm:text-sm sm:px-4">
+            <svg class="hidden sm:block h-4 w-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M17 2l4 4-4 4M3 11V9a3 3 0 013-3h15M7 22l-4-4 4-4M21 13v2a3 3 0 01-3 3H3"/></svg>
+            <span>Delete Reposts</span>
+          </button>
+        </div>
+      </div>
+
+      <div id="toolPanel" role="tabpanel" aria-labelledby="tab-replies" tabindex="-1" class="mt-6 space-y-6 outline-none">
+
+        <!-- Steps card -->
+        <div id="steps" class="card rounded-3xl p-7 sm:p-12 fade-up scroll-mt-20">
+          <div class="mb-10">
+            <h3 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">How to run it in 6 steps</h3>
+            <p class="mt-3 text-slate-400">Takes about two minutes. No installs required.</p>
+          </div>
+
+          <ol class="space-y-7">
+            <!-- Step 1 (dynamic) -->
+            <li class="flex gap-5">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 font-bold text-[#0B0F19]">1</span>
+              <div class="pt-1">
+                <p id="step1" class="text-slate-200 leading-relaxed" aria-live="polite">
+                  <span id="step1Pre">Open your X profile's Replies tab (</span><code id="step1Url" class="inline-code text-sky-300 break-all">https://x.com/YOUR_USERNAME/with_replies</code><span id="step1Post">) in Chrome or Edge.</span>
+                </p>
+              </div>
+            </li>
+
+            <li class="flex gap-5">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 font-bold text-[#0B0F19]">2</span>
+              <div class="pt-1">
+                <p class="text-slate-200">Open Developer Tools:</p>
+                <p class="mt-2 text-sm text-slate-400"><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>I</kbd> (Windows/Linux) &nbsp;or&nbsp; <kbd>Cmd</kbd> + <kbd>Option</kbd> + <kbd>I</kbd> (Mac)</p>
+              </div>
+            </li>
+
+            <li class="flex gap-5">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 font-bold text-[#0B0F19]">3</span>
+              <div class="pt-1">
+                <p class="text-slate-200">Switch to the <strong class="text-white">Console</strong> tab.</p>
+              </div>
+            </li>
+
+            <li class="flex gap-5">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 font-bold text-[#0B0F19]">4</span>
+              <div class="pt-1">
+                <p class="text-slate-200">If Chrome blocks pasting, type <code class="inline-code text-sky-300">allow pasting</code> and press <kbd>Enter</kbd>.</p>
+              </div>
+            </li>
+
+            <li class="flex gap-5">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 font-bold text-[#0B0F19]">5</span>
+              <div class="pt-1">
+                <p class="text-slate-200">Click <strong class="text-white">Copy Script</strong> below, paste it into the Console, and press <kbd>Enter</kbd>.</p>
+              </div>
+            </li>
+
+            <li class="flex gap-5">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-indigo-500 font-bold text-[#0B0F19]">6</span>
+              <div class="pt-1">
+                <p class="text-slate-200">Keep the tab open and visible until the console logs <code class="inline-code text-emerald-300">FINISHED!</code>. Refresh (<kbd>F5</kbd>) and re-run once if any older items remain.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Code block -->
+        <div id="script-box" class="card rounded-2xl overflow-hidden shadow-2xl shadow-sky-900/20 fade-up scroll-mt-20">
+          <div class="flex items-center justify-between gap-4 border-b border-[#1E293B] bg-[#0F1629] px-4 sm:px-5 py-3">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="flex gap-1.5" aria-hidden="true">
+                <span class="h-3 w-3 rounded-full bg-rose-500/80"></span>
+                <span class="h-3 w-3 rounded-full bg-amber-400/80"></span>
+                <span class="h-3 w-3 rounded-full bg-emerald-400/80"></span>
+              </div>
+              <span id="fileLabel" class="truncate font-mono text-sm text-slate-300">delete-x-replies.js</span>
+            </div>
+            <button id="copyBtn" type="button"
+              class="btn-primary inline-flex shrink-0 items-center gap-2 rounded-lg px-4 py-2 text-sm">
+              <svg id="copyIcon" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path stroke-linecap="round" d="M5 15V5a2 2 0 012-2h10"/></svg>
+              <svg id="checkIcon" class="h-4 w-4 hidden" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <span id="copyLabel" aria-live="polite">Copy Script</span>
+            </button>
+          </div>
+
+          <pre id="scriptPre" class="code-block m-0 max-h-[460px] overflow-auto p-5 sm:p-6 text-sm leading-relaxed"><code id="scriptCode" class="font-mono text-slate-300 whitespace-pre">// PASTE YOUR DELETE REPLIES JAVASCRIPT CODE HERE</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. FAQ -->
+    <section id="faq" aria-labelledby="faq-heading" class="mx-auto max-w-3xl px-5 py-20 scroll-mt-20">
+      <div class="text-center mb-12 fade-up">
+        <h2 id="faq-heading" class="text-3xl sm:text-4xl font-bold tracking-tight text-white">Frequently Asked Questions</h2>
+      </div>
+
+      <div class="space-y-4">
+        <details class="card rounded-xl fade-up transition-colors hover:border-sky-400/40">
+          <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-white">
+            Which tab on X should I open for Posts, Replies, and Reposts?
+            <svg class="chev h-5 w-5 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+            <ul class="list-disc space-y-2 pl-5">
+              <li><strong class="text-slate-200">Replies:</strong> open <code class="inline-code text-sky-300">x.com/USERNAME/with_replies</code>.</li>
+              <li><strong class="text-slate-200">Posts:</strong> open your main profile page, <code class="inline-code text-sky-300">x.com/USERNAME</code>.</li>
+              <li><strong class="text-slate-200">Reposts:</strong> also open your main profile page, <code class="inline-code text-sky-300">x.com/USERNAME</code>, since your reposts appear there alongside your posts.</li>
+            </ul>
+            <p class="mt-3">Make sure the tab matches the script you selected above before you paste it into the Console.</p>
+          </div>
+        </details>
+
+        <details class="card rounded-xl fade-up transition-colors hover:border-sky-400/40">
+          <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-white">
+            Is this safe for my account?
+            <svg class="chev h-5 w-5 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+            The scripts run entirely inside your own browser tab on the X website you're already logged into. They don't ask for your password or API keys, and nothing is sent to a third-party server. Deletions are permanent, though, so double-check which mode you've selected. As with any code you paste into a console, read it first &mdash; it's open source and fully readable.
+          </div>
+        </details>
+
+        <details class="card rounded-xl fade-up transition-colors hover:border-sky-400/40">
+          <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-white">
+            Why did it stop before deleting everything?
+            <svg class="chev h-5 w-5 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+            X loads your timeline lazily, so older items only appear after the page scrolls to them. If the script finishes while items remain, the page may have run out of loaded content, the tab may have been hidden or in the background, or X may have briefly slowed down. Keep the tab visible, refresh with <kbd>F5</kbd>, and run the script again once. Repeat until the console logs <code class="inline-code text-emerald-300">FINISHED!</code> with nothing left.
+          </div>
+        </details>
+
+        <details class="card rounded-xl fade-up transition-colors hover:border-sky-400/40">
+          <summary class="flex items-center justify-between gap-4 p-5 font-semibold text-white">
+            How do I stop the script early?
+            <svg class="chev h-5 w-5 text-sky-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="px-5 pb-5 text-sm leading-relaxed text-slate-400">
+            Refresh the page with <kbd>F5</kbd>. That clears the running script from memory, so nothing continues in the background. Anything already deleted stays deleted.
+          </div>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-[#1E293B] bg-[#0B0F19]">
+    <div class="mx-auto max-w-6xl px-5 py-10 flex flex-col items-center gap-4 text-center text-sm text-slate-500">
+      <p class="max-w-2xl leading-relaxed">
+        This is an independent, open-source utility and is <strong class="text-slate-400">not affiliated with, endorsed by, or sponsored by X Corp.</strong> “X” and “Twitter” are trademarks of their respective owner.
+      </p>
+      <p>&copy; <span id="year"></span> Bulk Delete X. Free and open source.</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      /* ---------- Mode configuration ---------- */
+      const MODES = {
+        replies: {
+          file: 'delete-x-replies.js',
+          tpl: 'tpl-replies',
+          pre: "Open your X profile's Replies tab (",
+          url: 'https://x.com/YOUR_USERNAME/with_replies',
+          post: ') in Chrome or Edge.'
+        },
+        posts: {
+          file: 'delete-x-posts.js',
+          tpl: 'tpl-posts',
+          pre: 'Open your main X profile Posts tab (',
+          url: 'https://x.com/YOUR_USERNAME',
+          post: ') in Chrome or Edge.'
+        },
+        reposts: {
+          file: 'delete-x-reposts.js',
+          tpl: 'tpl-reposts',
+          pre: 'Open your main X profile Posts tab (',
+          url: 'https://x.com/YOUR_USERNAME',
+          post: ') where your reposts appear in Chrome or Edge.'
+        }
+      };
+      const ORDER = ['replies', 'posts', 'reposts'];
+
+      /* ---------- Elements ---------- */
+      const tabs = Array.from(document.querySelectorAll('#modeTabs [role="tab"]'));
+      const panel = document.getElementById('toolPanel');
+      const step1 = document.getElementById('step1');
+      const step1Pre = document.getElementById('step1Pre');
+      const step1Url = document.getElementById('step1Url');
+      const step1Post = document.getElementById('step1Post');
+      const fileLabel = document.getElementById('fileLabel');
+      const codeEl = document.getElementById('scriptCode');
+      const btn = document.getElementById('copyBtn');
+      const label = document.getElementById('copyLabel');
+      const copyIcon = document.getElementById('copyIcon');
+      const checkIcon = document.getElementById('checkIcon');
+
+      let current = 'replies';
+      let timer = null;
+
+      /* Read the script for a mode straight from its hidden <script type="text/plain"> block */
+      function getScript(mode) {
+        const el = document.getElementById(MODES[mode].tpl);
+        // Strip only the formatting newlines around the pasted code
+        return (el ? el.textContent : '').replace(/^\r?\n/, '').replace(/\s+$/, '');
+      }
+
+      /* ---------- Copy button state ---------- */
+      function resetCopyState() {
+        clearTimeout(timer);
+        label.textContent = 'Copy Script';
+        checkIcon.classList.add('hidden');
+        copyIcon.classList.remove('hidden');
+        btn.classList.remove('copied-flash');
+      }
+
+      function showCopied() {
+        label.textContent = 'Copied!';
+        copyIcon.classList.add('hidden');
+        checkIcon.classList.remove('hidden');
+        btn.classList.remove('copied-flash');
+        void btn.offsetWidth; // restart animation
+        btn.classList.add('copied-flash');
+        clearTimeout(timer);
+        timer = setTimeout(resetCopyState, 2000);
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showCopied(); }
+        catch (e) { label.textContent = 'Copy failed'; setTimeout(resetCopyState, 2000); }
+        document.body.removeChild(ta);
+      }
+
+      btn.addEventListener('click', () => {
+        const text = getScript(current); // exactly the script for the active tab
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(showCopied).catch(() => fallbackCopy(text));
+        } else {
+          fallbackCopy(text);
+        }
+      });
+
+      /* ---------- Mode switching ---------- */
+      function animate(el) {
+        el.classList.remove('swap-in');
+        void el.offsetWidth;
+        el.classList.add('swap-in');
+      }
+
+      function setMode(mode, opts) {
+        opts = opts || {};
+        if (!MODES[mode]) mode = 'replies';
+        const cfg = MODES[mode];
+        const changed = mode !== current;
+        current = mode;
+
+        tabs.forEach((t) => {
+          const active = t.dataset.mode === mode;
+          t.setAttribute('aria-selected', String(active));
+          t.tabIndex = active ? 0 : -1;
+        });
+        panel.setAttribute('aria-labelledby', 'tab-' + mode);
+
+        // Step 1
+        step1Pre.textContent = cfg.pre;
+        step1Url.textContent = cfg.url;
+        step1Post.textContent = cfg.post;
+
+        // File label + code
+        fileLabel.textContent = cfg.file;
+        codeEl.textContent = getScript(mode);
+
+        resetCopyState();
+
+        if (changed) {
+          animate(step1);
+          animate(fileLabel);
+          animate(codeEl);
+        }
+
+        if (opts.focus) {
+          tabs.find((t) => t.dataset.mode === mode).focus();
+        }
+
+        // Keep the selected mode in the URL (shareable) without reloading or scrolling
+        if (!opts.silent) {
+          try {
+            const u = new URL(window.location.href);
+            u.searchParams.set('mode', mode);
+            history.replaceState(null, '', u);
+          } catch (e) { /* ignore (e.g. file://) */ }
+        }
+      }
+
+      tabs.forEach((t) => {
+        t.addEventListener('click', () => setMode(t.dataset.mode));
+        t.addEventListener('keydown', (e) => {
+          const i = ORDER.indexOf(t.dataset.mode);
+          let next = null;
+          if (e.key === 'ArrowRight') next = ORDER[(i + 1) % ORDER.length];
+          else if (e.key === 'ArrowLeft') next = ORDER[(i - 1 + ORDER.length) % ORDER.length];
+          else if (e.key === 'Home') next = ORDER[0];
+          else if (e.key === 'End') next = ORDER[ORDER.length - 1];
+          if (next) { e.preventDefault(); setMode(next, { focus: true }); }
+        });
+      });
+
+      // Initial mode (default: replies; supports ?mode=posts|reposts)
+      let initial = 'replies';
+      try {
+        const q = new URLSearchParams(window.location.search).get('mode');
+        if (q && MODES[q]) initial = q;
+      } catch (e) {}
+      setMode(initial, { silent: true });
+    })();
+
+    /* ---------- Fade-in on scroll ---------- */
+    (function () {
+      const items = document.querySelectorAll('.fade-up');
+      if (!('IntersectionObserver' in window)) { items.forEach(el => el.classList.add('in')); return; }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      }, { threshold: 0.1 });
+      items.forEach(el => io.observe(el));
+    })();
+
+    /* ---------- Footer year ---------- */
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
